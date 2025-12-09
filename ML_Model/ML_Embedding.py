@@ -56,6 +56,11 @@ for epoch in range(epochs):
     if epoch % 100 == 0:  # still print progress
         print(f"Epoch {epoch}, Loss {loss.item():.4f}")
 
+final_embedding = Z.detach().numpy()
+np.save('saved_data/ml_embedding.npy', final_embedding)
+np.save('saved_data/node_names_ml.npy', np.array(nodes))
+print("\nML embedding saved...")
+
 # Use consistent colors for nodes
 k = 3
 from sklearn.cluster import KMeans
@@ -66,7 +71,7 @@ node_colors = plt.cm.tab10(final_kmeans.labels_)
 fig = plt.figure(figsize=(10,8))
 ax = fig.add_subplot(projection='3d')
 
-# Fix axis limits so it doesn’t jump
+# Fix axis limits
 all_data = np.vstack(embeddings_over_time)
 xlim = (np.min(all_data[:,0]), np.max(all_data[:,0]))
 ylim = (np.min(all_data[:,1]), np.max(all_data[:,1]))
@@ -97,6 +102,8 @@ def update(frame):
     ax.set_zlim(zlim)
     ax.set_title(f"Epoch {frame}")
 
+print("Creating animation, might take a minute.")
 ani = FuncAnimation(fig, update, frames=len(embeddings_over_time), interval=20)
-ani.save("embedding_animation.mp4", dpi=200)
-plt.show()
+ani.save("ML_Model/embedding_animation.mp4", dpi=200)
+plt.savefig("ML_Model/Clustered Node Embedding.png")
+# plt.show()

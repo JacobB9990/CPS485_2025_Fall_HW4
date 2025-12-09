@@ -36,6 +36,10 @@ L = D - A_sparse                  # Laplacian
 vals, vecs = eigsh(L, k=4, which='SM')
 embedding = vecs[:, 1:4]   
 
+np.save('saved_data/spectral_embedding.npy', embedding)
+np.save('saved_data/node_names_spec.npy', np.array(nodes))
+print("\nSpectral embedding saved...")
+
 # Clustering
 k = 3  # 3 clusters
 kmeans = KMeans(n_clusters=k, n_init=20).fit(embedding)
@@ -63,5 +67,5 @@ for (u,v) in edges:
             color='gray')
 plt.title("Spectral Node Embedding (ML)")
 plt.tight_layout()
-fig.savefig("Spectral Node Embedding.png", dpi=300)
+fig.savefig("Spectral_Classic/Spectral Node Embedding.png", dpi=300)
 plt.show()
